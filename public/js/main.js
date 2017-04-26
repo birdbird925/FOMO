@@ -1,6 +1,7 @@
 $(function() {
     var token = $('meta[name="csrf-token"]').attr('content');
     var locked = false;
+    var currentPosition = 0;
     function unlock() {locked = false;}
 
     /***************
@@ -225,13 +226,29 @@ $(function() {
     });
 
     // login popup
+    function mobileLogin() {
+        if($('.login-popup').hasClass('popup')) {
+            mobileLogin.y = $(document).scrollTop();
+            $(document).scrollTop(0);
+            $('html, body').css({
+                'max-height': $('.login-popup').height(),
+                'overflow': 'hidden'
+            });
+            $('footer').css('display', 'none');
+        }
+        else {
+            $('html, body').css({
+                'max-height': '',
+                'overflow': ''
+            });
+            $(document).scrollTop(mobileLogin.y);
+        }
+    }
     $('.login-tab').click(function() {
         // toggle login popup
         $('.login-popup').toggleClass('popup');
         // hide nav menu
         if($('body').hasClass('reveal-nav')) $('body').removeClass('reveal-nav');
-        // set overflow hidden
-        $('body').toggleClass('initial');
         // show login form as first in mobile
         $('.login-popup .login, .login-popup .register').removeClass('mobile');
         $('.login-popup .login').addClass('mobile');
@@ -241,6 +258,9 @@ $(function() {
         // clean form and error
         $('.login-popup input[type=email], .login-popup input[type=password]').val('');
         $('.login-popup .error').text('');
+
+        // mobile login-popup
+        if($(window).width() < 769) {mobileLogin();}
         unlock();
 
         // if user checkout with login
@@ -249,7 +269,6 @@ $(function() {
             if(action == 'checkout'){$( "#checkout-form" ).submit();}
             $('.login-popup input[type=submit]').attr('data-action', '');
             $('.login-popup .login-tab').attr('data-action', '');
-            $('body').removeClass('initial');
         }
     });
     $('.login-popup .switch').on('click', function(){

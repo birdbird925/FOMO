@@ -9,8 +9,6 @@
     text-align: center
     font-family: 'Muli'
     width: calc(100%)
-    top: 0
-    left: 0
     min-height: 100vh
     height: auto
     background: $white
@@ -173,6 +171,8 @@
         top: 60px
 
     .login-popup
+        min-height: 0
+        position: fixed
         top: -100vh
         transition: top 666ms cubic-bezier(.666,0,.333,1)
         -webkit-transition: top 666ms cubic-bezier(.666,0,.333,1)
@@ -189,6 +189,12 @@
         justify-content: center
         flex-direction: column
 
+        .popup-inner
+            width: calc(100% - 100px)
+
+        hr
+            display: none
+
         .login,
         .register
             display: block
@@ -197,6 +203,7 @@
             padding: 20px 15px
 
         .popup-footer
+            width: calc(100% - 100px)
             padding-top: 20px
             position: static
             -webkit-transform: translate3d(0,0,0)

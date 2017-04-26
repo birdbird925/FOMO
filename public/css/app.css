@@ -10450,8 +10450,6 @@ footer .design-by a:hover {
   text-align: center;
   font-family: 'Muli';
   width: calc(100%);
-  top: 0;
-  left: 0;
   min-height: 100vh;
   height: auto;
   background: #fff;
@@ -10632,6 +10630,8 @@ footer .design-by a:hover {
     top: 60px;
   }
   .login-popup {
+    min-height: 0;
+    position: fixed;
     top: -100vh;
     transition: top 666ms cubic-bezier(0.666, 0, 0.333, 1);
     -webkit-transition: top 666ms cubic-bezier(0.666, 0, 0.333, 1);
@@ -10653,6 +10653,12 @@ footer .design-by a:hover {
     -webkit-box-direction: normal;
     flex-direction: column;
   }
+  .login-popup .popup-inner {
+    width: calc(100% - 100px);
+  }
+  .login-popup hr {
+    display: none;
+  }
   .login-popup .login,
   .login-popup .register {
     display: block;
@@ -10661,6 +10667,7 @@ footer .design-by a:hover {
     padding: 20px 15px;
   }
   .login-popup .popup-footer {
+    width: calc(100% - 100px);
     padding-top: 20px;
     position: static;
     -webkit-transform: translate3d(0, 0, 0);
