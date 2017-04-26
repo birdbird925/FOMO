@@ -10468,18 +10468,14 @@ footer .design-by a:hover {
   font-size: 30px;
   line-height: 36px;
   letter-spacing: 2px;
-  margin: 30px auto;
+  margin: 30px auto 20px;
   clear: both;
   text-transform: uppercase;
 }
 
 .login-popup .popup-footer {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  -webkit-transform: translate3d(-50%, 0, 0);
-  transform: translate3d(-50%, 0, 0);
   width: calc(100% - 60px);
+  margin: 25px auto;
 }
 
 .login-popup .close-nav {
@@ -10506,7 +10502,7 @@ footer .design-by a:hover {
 .login-popup .register {
   opacity: 0;
   display: none;
-  margin-top: 100px;
+  margin-top: 70px;
   transition: opacity 333ms linear;
   -webkit-transition: opacity 333ms linear;
 }
@@ -10620,7 +10616,7 @@ footer .design-by a:hover {
 }
 
 .login-popup .action-switcher {
-  margin: 60px auto 30px;
+  margin: 25px auto 15px;
 }
 
 @media (min-width: 769px) {
