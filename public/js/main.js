@@ -12,7 +12,7 @@ $(function() {
         // reset page to top
         $(window).on('beforeunload', function() {$(window).scrollTop(0);});
 
-        $(document).one('click', function(e) {
+        $(document).one('click touchstart', function(e) {
             e.preventDefault();
             $('#logo').addClass('animate-start');
             var vh = $(window).height();
