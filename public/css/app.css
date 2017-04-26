@@ -9847,6 +9847,10 @@ header .nav-right ul .cart .item-count {
   margin-bottom: 30px;
 }
 
+.nav-menu ul li:last-child {
+  margin-bottom: 0;
+}
+
 .nav-menu ul li a,
 .nav-menu ul li input[type=submit] {
   cursor: pointer;
@@ -9889,6 +9893,12 @@ header .nav-right ul .cart .item-count {
 
 .nav-menu .ship-to {
   display: none;
+}
+
+@media (max-width: 768px) and (ming-height: 500px) {
+  .nav-menu ul li {
+    margin-bottom: 40px;
+  }
 }
 
 @media (min-width: 769px) {

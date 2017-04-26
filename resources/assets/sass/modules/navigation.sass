@@ -27,6 +27,9 @@
         li
             margin-bottom: 30px
 
+            &:last-child
+                margin-bottom: 0
+
             a,
             input[type=submit]
                 cursor: pointer
@@ -66,6 +69,12 @@
 
     .ship-to
         display: none
+
+@media (max-width: 768px) and (ming-height: 500px)
+    .nav-menu
+        ul
+            li
+                margin-bottom: 40px
 
 
 @media (min-width: 769px)
