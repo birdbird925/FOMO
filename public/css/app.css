@@ -10444,13 +10444,16 @@ footer .design-by a:hover {
 }
 
 .login-popup {
-  position: fixed;
+  position: absolute;
   margin: auto;
   z-index: -1;
   text-align: center;
   font-family: 'Muli';
   width: calc(100%);
-  height: 100vh;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  height: auto;
   background: #fff;
   opacity: 0;
   transition: opacity 333ms linear, z-index 444ms linear;
@@ -10468,7 +10471,7 @@ footer .design-by a:hover {
   font-size: 30px;
   line-height: 36px;
   letter-spacing: 2px;
-  margin: 30px auto 20px;
+  margin: 30px auto;
   clear: both;
   text-transform: uppercase;
 }
@@ -10587,7 +10590,7 @@ footer .design-by a:hover {
 
 .login-popup .social-login {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   color: #fff;
   padding: 13px;
   font-size: 12px;
@@ -10616,7 +10619,12 @@ footer .design-by a:hover {
 }
 
 .login-popup .action-switcher {
-  margin: 25px auto 15px;
+  margin: 20px auto;
+}
+
+.login-popup hr {
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 @media (min-width: 769px) {

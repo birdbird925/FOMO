@@ -34,11 +34,13 @@
     </div>
     <div class="popup-footer">
         <div class="col-sm-6 social-login-box">
+            <hr>
             <label>Or continue with</label>
             <a href="/login/facebook?backto={{Request::url()}}" class="facebook social-login">Facebook</a>
             <a href="/login/google?backto={{Request::url()}}" class="google social-login">Google</a>
         </div>
         <div class="col-sm-6">
+            <hr>
             <div class="action-switcher">
                 <label>Don't have account?</label>
                 <a class="switch">Sign up now!</a>
