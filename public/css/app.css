@@ -10726,7 +10726,7 @@ footer .design-by a:hover {
   width: calc(100% - 60px);
   margin: auto;
   position: absolute;
-  top: 35%;
+  top: 25%;
   left: 50%;
   -webkit-transform: translate3d(-50%, 0, 0);
   transform: translate3d(-50%, 0, 0);
