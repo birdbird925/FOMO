@@ -10252,7 +10252,7 @@ footer .design-by a:hover {
 
 .featured-products .product .box .image-wrapper img {
   display: block;
-  max-width: 90%;
+  max-width: 100%;
   margin: auto;
 }
 

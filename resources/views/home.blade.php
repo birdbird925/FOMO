@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    @if(sizeof($slider) != 0)
+    @if(sizeof($slider) == 0)
     <ul class="hero-slider" id="lightSlider">
         @foreach($slider as $slide)
             @if($slide->link != '')
