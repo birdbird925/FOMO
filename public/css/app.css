@@ -8660,12 +8660,13 @@ body.initial {
   text-transform: uppercase;
   font-family: 'Muli';
   font-size: 30px;
-  line-height: 36px;
+  line-height: 42px;
   letter-spacing: 2px;
-  width: 100%;
+  width: 80%;
 }
 
 .cart-wrapper .empty-msg a {
+  margin-top: 20px;
   color: #fba200;
   font-weight: 900;
   font-size: 14px;
