@@ -21,7 +21,7 @@
     <div class="hero-image"></div>
     @endif
 
-    <div class="featured-products">
+    <div class="featured-products" id="featured">
         @if($featuredProduct->count() != 0)
             @foreach($featuredProduct as $feature)
                 <div class="product">

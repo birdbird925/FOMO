@@ -19,7 +19,7 @@ $(function() {
             if($('body').hasClass('initial')){
                 setTimeout(function() {
                     $("body").animate({
-                        scrollTop: vh
+                        scrollTop: $('#featured').position().top
                     }, 666, function(){
                         $('body').removeClass('initial');
                         $('body').css('overflow', 'auto');
