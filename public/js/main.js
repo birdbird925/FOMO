@@ -85,6 +85,12 @@ $(function() {
         // reset page to top
         $(window).on('beforeunload', function() {$(window).scrollTop(0);});
 
+        $(window).on('click', function(e){
+            if($('body').hasClass('initial')) {
+                e.preventDefault();
+            }
+        });
+
         $(window).one('mousewheel', function() {
             $(window).scrollTop(0);
             $('#logo').addClass('animate-start');
