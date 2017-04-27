@@ -5,16 +5,10 @@
 @endsection
 
 @section('content')
-    @if(sizeof($slider) == 0)
+    @if(sizeof($slider) != 0)
     <ul class="hero-slider" id="lightSlider">
         @foreach($slider as $slide)
-            @if($slide->link != '')
-                <a href="{{$slide->link}}">
-            @endif
-                <li style="background-image: url({{$slide->image->getSrc()}})"></li>
-            @if($slide->link != '')
-                </a>
-            @endif
+            <li style="background-image: url({{$slide->image->getSrc()}})"></li>
         @endforeach
     </ul>
     @else
