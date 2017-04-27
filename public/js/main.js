@@ -85,7 +85,7 @@ $(function() {
         // reset page to top
         $(window).on('beforeunload', function() {$(window).scrollTop(0);});
 
-        $(window).one('scroll', function() {
+        $(window).one('mousewheel', function() {
             $(window).scrollTop(0);
             $('#logo').addClass('animate-start');
             var vh = $(window).height();
