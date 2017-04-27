@@ -3,6 +3,79 @@ $(function() {
     var locked = false;
     var currentPosition = 0;
     function unlock() {locked = false;}
+    // load canvs thumb
+    function loadThumb(thumbWrapper){
+        var thumb = thumbWrapper;
+        var konvaObj = JSON.parse(thumbWrapper.attr('data-thumb'));
+        var stageWidth = thumbWrapper.width();
+        var ratio = stageWidth / konvaObj.stage.width;
+        var stageHeight = konvaObj.stage.height * ratio;
+        var ratio = stageHeight / konvaObj.stage.height;
+        var deferreds = [];
+
+        var stage = new Konva.Stage({
+            container: thumbWrapper.attr('id'),
+            width: stageWidth,
+            height: stageHeight
+        });
+
+        $.each(konvaObj.layer, function(index, layers){
+            layer = new Konva.Layer();
+            stage.add(layer);
+            $.each(layers, function(index, konvaNode){
+                if(konvaNode.type == 'image' && typeof konvaNode.src !== typeof undefined) {
+                    var konvaImg = new Konva.Image({
+                        x: (konvaNode.x != 0) ? konvaNode.x * ratio : 0,
+                        y: (konvaNode.y != 0) ? konvaNode.y * ratio : 0,
+                        offsetX: (konvaNode.x != 0) ? konvaNode.width * ratio / 2 : 0,
+                        offsetY: (konvaNode.y != 0) ? konvaNode.height * ratio / 2 : 0,
+                        width: konvaNode.width * ratio,
+                        height: konvaNode.height * ratio,
+                        rotation: konvaNode.rotation,
+                    });
+                    layer.add(konvaImg);
+                    deferreds.push(loadThumbCanvasImg(konvaNode.src, konvaImg));
+                }
+                if(konvaNode.type == 'text') {
+                    var konvaTxt = new Konva.Text({
+                        text: konvaNode.text,
+                        fontFamily: 'monospace',
+                        fill: 'gold',
+                        x: (konvaNode.x != 0) ? konvaNode.x * ratio : 0,
+                        y: (konvaNode.y != 0) ? konvaNode.y * ratio : 0,
+                        fontSize: konvaNode['font-size'] * ratio
+                    });
+                    layer.add(konvaTxt);
+                    layer.draw();
+                }
+            });
+        });
+
+        return $.when.apply(null, deferreds).done(function() {
+            thumbWrapper.animate({'opacity': '1'}, 444);
+            customizeProductThumb.stage.push(stage);
+        });
+    }
+    function customizeProductThumb(){
+        customizeProductThumb.stage = [];
+        $.each($('body').find('.konvas-thumb'), function(index, thumb){
+            if($(window).width() > 768 || !$(this).hasClass('mobile-hide')) {
+                loadThumb($(this));
+            }
+        });
+    }
+    function loadThumbCanvasImg(imgSrc, konvaImg) {
+        var deferred = $.Deferred();
+        var imgObj = new Image();
+        imgObj.onload = function() {
+            konvaImg.image(imgObj);
+            konvaImg.getLayer().draw();
+            deferred.resolve();
+        };
+        imgObj.src = imgSrc;
+        return deferred.promise();
+    }
+    customizeProductThumb();
 
     /***************
     ** home
@@ -12,8 +85,8 @@ $(function() {
         // reset page to top
         $(window).on('beforeunload', function() {$(window).scrollTop(0);});
 
-        $(document).one('click touchstart', function(e) {
-            e.preventDefault();
+        $(window).one('scroll', function() {
+            $(window).scrollTop(0);
             $('#logo').addClass('animate-start');
             var vh = $(window).height();
             if($('body').hasClass('initial')){
@@ -22,12 +95,48 @@ $(function() {
                         scrollTop: $('#featured').position().top
                     }, 666, function(){
                         $('body').removeClass('initial');
-                        $('body').css('overflow', 'auto');
                     });
                 }, 666)
             }
         });
     }
+    // if($(window).scrollTop() > 0 && initialAnimation) {
+    //     initialAnimation = false
+    //     $('#logo').addClass('animate-start');
+    //     var vh = $(window).height();
+    //     if($('body').hasClass('initial')){
+    //         setTimeout(function() {
+    //             $("body").animate({
+    //                 scrollTop: $('#featured').position().top
+    //             }, 666, function(){
+    //                 $('body').removeClass('initial');
+    //                 $('body').css('overflow', 'auto');
+    //             });
+    //         }, 666)
+    //     }
+    // }
+    // if($('body').hasClass('initial') && !$('#logo').hasClass('fixed') && !$('#logo').hasClass('animate-start')) {
+    //     initialAnimation = true;
+    //     // reset page to top
+    //     $(window).on('beforeunload', function() {$(window).scrollTop(0);});
+        // $(document).on('scrollstart touchstart click', function(e) {
+            // console.log('animate');
+            // console.log('1');
+            // e.preventDefault();
+            // $('#logo').addClass('animate-start');
+            // var vh = $(window).height();
+            // if($('body').hasClass('initial')){
+            //     setTimeout(function() {
+            //         $("body").animate({
+            //             scrollTop: $('#featured').position().top
+            //         }, 666, function(){
+            //             $('body').removeClass('initial');
+            //             $('body').css('overflow', 'auto');
+            //         });
+            //     }, 666)
+            // }
+        // });
+    // }
     // nav triggle
     $('.menu-tab').on('click', function() {
         if(!locked) {
@@ -41,12 +150,15 @@ $(function() {
     // light slider in home page
     $(".hero-slider").lightSlider({
         item: 3,
+        slideMove:3,
+        easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
+        speed:600,
         slideMove: 3,
         pager: false,
         enableDrag: false,
         auto: true,
         pause: 5000,
-        loop: true,
+        // loop: true,
         slideMargin: 0,
         controls: false,
         responsive : [
@@ -1525,78 +1637,6 @@ $(function() {
     /***************
     ** cart
     /**************/
-    function loadThumb(thumbWrapper){
-        var thumb = thumbWrapper;
-        var konvaObj = JSON.parse(thumbWrapper.attr('data-thumb'));
-        var stageWidth = thumbWrapper.width();
-        var ratio = stageWidth / konvaObj.stage.width;
-        var stageHeight = konvaObj.stage.height * ratio;
-        var ratio = stageHeight / konvaObj.stage.height;
-        var deferreds = [];
-
-        var stage = new Konva.Stage({
-            container: thumbWrapper.attr('id'),
-            width: stageWidth,
-            height: stageHeight
-        });
-
-        $.each(konvaObj.layer, function(index, layers){
-            layer = new Konva.Layer();
-            stage.add(layer);
-            $.each(layers, function(index, konvaNode){
-                if(konvaNode.type == 'image' && typeof konvaNode.src !== typeof undefined) {
-                    var konvaImg = new Konva.Image({
-                        x: (konvaNode.x != 0) ? konvaNode.x * ratio : 0,
-                        y: (konvaNode.y != 0) ? konvaNode.y * ratio : 0,
-                        offsetX: (konvaNode.x != 0) ? konvaNode.width * ratio / 2 : 0,
-                        offsetY: (konvaNode.y != 0) ? konvaNode.height * ratio / 2 : 0,
-                        width: konvaNode.width * ratio,
-                        height: konvaNode.height * ratio,
-                        rotation: konvaNode.rotation,
-                    });
-                    layer.add(konvaImg);
-                    deferreds.push(loadThumbCanvasImg(konvaNode.src, konvaImg));
-                }
-                if(konvaNode.type == 'text') {
-                    var konvaTxt = new Konva.Text({
-                        text: konvaNode.text,
-                        fontFamily: 'monospace',
-                        fill: 'gold',
-                        x: (konvaNode.x != 0) ? konvaNode.x * ratio : 0,
-                        y: (konvaNode.y != 0) ? konvaNode.y * ratio : 0,
-                        fontSize: konvaNode['font-size'] * ratio
-                    });
-                    layer.add(konvaTxt);
-                    layer.draw();
-                }
-            });
-        });
-
-        return $.when.apply(null, deferreds).done(function() {
-            thumbWrapper.animate({'opacity': '1'}, 444);
-            customizeProductThumb.stage.push(stage);
-        });
-    }
-    function customizeProductThumb(){
-        customizeProductThumb.stage = [];
-        $.each($('body').find('.konvas-thumb'), function(index, thumb){
-            if($(window).width() > 768 || !$(this).hasClass('mobile-hide')) {
-                loadThumb($(this));
-            }
-        });
-    }
-    function loadThumbCanvasImg(imgSrc, konvaImg) {
-        var deferred = $.Deferred();
-        var imgObj = new Image();
-        imgObj.onload = function() {
-            konvaImg.image(imgObj);
-            konvaImg.getLayer().draw();
-            deferred.resolve();
-        };
-        imgObj.src = imgSrc;
-        return deferred.promise();
-    }
-    customizeProductThumb();
     $('select[name="shipping-country"]').on('change', function() {
         if($(this).val() != '') {
             var location = $(this).val();
@@ -1650,5 +1690,17 @@ $(function() {
                 }
             }
         });
+    });
+
+    /**************
+    ** admin cms
+    /*************/
+    $(".cms-slider").lightSlider({
+        item: 1,
+        // pager: false,
+        enableDrag: false,
+        pause: 5000,
+        slideMargin: 0,
+        controls: false
     });
 });
