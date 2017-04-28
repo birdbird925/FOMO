@@ -141,8 +141,11 @@ class CmsController extends Controller
 
                 $featured->product_id = $request->product_id;
                 if($request->background != null) {
+                    $deleteImage = $featured->background;
                     $imageID = $imageRepository->upload(['file' => request()->file('background'), 'isProductImage' => 0])->getData()->id;
                     $featured->background = $imageID;
+                    $featured->save();
+                    $imageRepository->delete($deleteImage);
                 }
 
                 $featured->save();
@@ -154,8 +157,10 @@ class CmsController extends Controller
 
                 $this->validate($request, ['image' => 'required|image']);
                 $imageID = $imageRepository->upload(['file' => request()->file('image'), 'isProductImage' => 0])->getData()->id;
+                $deleteImage = $slider->image_id;
                 $slider->image_id = $imageID;
                 $slider->save();
+                $imageRepository->delete($deleteImage);
                 break;
 
             case 'menu':
@@ -204,15 +209,18 @@ class CmsController extends Controller
 
     public function delete($type, $id)
     {
+        $imageRepository = new ImageRepository();
         switch($type) {
             case 'featured':
                 $featured = FeaturedProduct::find($id);
+                $imageRepository->delete($featured->background);
                 if(!$featured) return redirect('/admin/cms');
                 $featured->delete();
                 break;
 
             case 'slider':
                 $slider = Slider::find($id);
+                $imageRepository->delete($slider->image_id);
                 if(!$slider) return redirect('/admin/cms');
                 $slider->delete();
                 break;
