@@ -1682,4 +1682,24 @@ $(function() {
     });
 
     if($('#ckeditor').get(0)) CKEDITOR.replace('ckeditor');
+
+    if($('#data-table').get(0)) {
+        // click row to redirect
+        $('#data-table tbody').on('click', 'tr', function() {
+            var url = $(this).attr('href');
+            location.href = url;
+        });
+
+        $('#data-table').DataTable({
+            "paging":    false,
+            "info":      false,
+            "aaSorting": [],
+            columnDefs: [
+                {
+                    "targets": [ 0, 1, 2, 3 ],
+                    "className": 'mdl-data-table__cell--non-numeric'
+                }
+            ],
+        });
+    }
 });

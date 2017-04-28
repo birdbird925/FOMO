@@ -51,8 +51,13 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('customize/component/{id}/edit', 'CustomizeController@editComponent');
     Route::get('customize/{id}', 'CustomizeController@show');
     Route::post('customize', 'CustomizeController@store');
-
-
+    // order
+    Route::get('order', 'OrderController@index');
+    Route::get('order/{id}', 'OrderController@show');
+    // customer
+    Route::get('customer', 'CustomerController@index');
+    Route::get('customer/{id}', 'CustomerController@show');
+    // cms
     Route::get('cms/', 'CmsController@index');
     Route::get('cms/{type}/create', 'CmsController@create');
     Route::post('cms/{type}', 'CmsController@store');

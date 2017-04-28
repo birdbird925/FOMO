@@ -42,7 +42,8 @@
   		<div class="sidebar-wrapper">
       		<div class="logo">
         		<a href="/admin" class="simple-text">
-					<img src="/images/demo/logo.svg" alt="">
+					<img src="/images/logo-white.svg" alt="">
+					<span>FOMO</span>
         		</a>
       		</div>
 
@@ -81,13 +82,13 @@
 						</ul>
 					</div>
 				</li>
-				<li>
+				<li class="@yield('order-sidebar')">
 					<a href="/admin/order">
 						<i class="pe-7s-note2"></i>
 						<p>Order</p>
 					</a>
 				</li>
-				<li>
+				<li class="@yield('customer-sidebar')">
 					<a href="/admin/customer">
 						<i class="pe-7s-users"></i>
 						<p>Customer</p>

@@ -22,6 +22,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function lastOrder()
+    {
+        return $this->order()->orderBy('created_at', 'DESC')->first();
+    }
+
     public function savedProduct()
     {
         return $this->hasMany(SavedProduct::class);
@@ -35,6 +40,47 @@ class User extends Authenticatable
     public function socialAccount()
     {
         return $this->hasOne(SocialAccount::class);
+    }
+
+    public function totalSpent()
+    {
+        $total = 0;
+        foreach($this->order as $order)
+            $total += $order->subTotal() + $order->shipping_cost;
+
+        return $total;
+    }
+
+    public function totalItem()
+    {
+        $total = 0;
+        foreach($this->order as $order)
+            $total += $order->items->count();
+
+        return $total;
+    }
+
+    public function successOrder()
+    {
+        return $this->order()->where('order_status', '1')->get();
+    }
+
+    public function successTotalSpent()
+    {
+        $total = 0;
+        foreach($this->successOrder() as $order)
+            $total += $order->subTotal() + $order->shipping_cost;
+
+        return $total;
+    }
+
+    public function successTotalItem()
+    {
+        $total = 0;
+        foreach($this->successOrder() as $order)
+            $total += $order->items->count();
+
+        return $total;
     }
 
     public function checkRole($role)

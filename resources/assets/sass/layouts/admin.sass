@@ -1,13 +1,26 @@
 #admin-wrapper
     .sidebar
         .logo
-            padding: 15px 30px
+            padding: 10px 30px
 
             a
                 text-align: left
 
-            img
-                width: 20px
+                &:hover
+                    text-decoration: none
+
+                img
+                    width: 18px
+
+                span
+                    font-family: 'Muli'
+                    font-weight: 900
+                    font-size: 24px
+                    margin-left: 20px
+                    vertical-align: middle
+    .navbar
+        border-radius: 0px
+        background: #fff
 
     .card
         font-family: 'Roboto', sans-serif
@@ -54,3 +67,31 @@
     .error
         color: red
         margin: 10px auto 20px
+
+
+    ul
+        padding: 0
+        list-style: none
+
+        li
+            margin-bottom: 7px
+
+            &:last-child
+                margin-bottom: 0
+
+            span
+                color: #9a9a9a
+                font-weight: 900
+                text-transform: uppercase
+                min-width: 120px
+                text-align: left
+                display: inline-block
+
+            del
+                color: red
+
+    .fa-check-circle
+        color: #27cc27 !important
+
+    .fa-times-circle
+        color: red

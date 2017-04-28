@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class Order extends Model
 {
     use Notifiable;
-    
+
     protected $guarded = [];
     protected $table = 'orders';
 
@@ -25,6 +25,16 @@ class Order extends Model
         foreach($this->items as $item)
             $total += $item->price;
         return $total;
+    }
+
+    public function fulfillStatus()
+    {
+        $fulfil = true;
+        foreach($this->items as $item)
+            if($item->quantity != $item->fulfill)
+                $fulfil = false;
+
+        return $fulfil;
     }
 
     public function orderCode()
