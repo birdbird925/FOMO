@@ -106,43 +106,6 @@ $(function() {
             }
         });
     }
-    // if($(window).scrollTop() > 0 && initialAnimation) {
-    //     initialAnimation = false
-    //     $('#logo').addClass('animate-start');
-    //     var vh = $(window).height();
-    //     if($('body').hasClass('initial')){
-    //         setTimeout(function() {
-    //             $("body").animate({
-    //                 scrollTop: $('#featured').position().top
-    //             }, 666, function(){
-    //                 $('body').removeClass('initial');
-    //                 $('body').css('overflow', 'auto');
-    //             });
-    //         }, 666)
-    //     }
-    // }
-    // if($('body').hasClass('initial') && !$('#logo').hasClass('fixed') && !$('#logo').hasClass('animate-start')) {
-    //     initialAnimation = true;
-    //     // reset page to top
-    //     $(window).on('beforeunload', function() {$(window).scrollTop(0);});
-        // $(document).on('scrollstart touchstart click', function(e) {
-            // console.log('animate');
-            // console.log('1');
-            // e.preventDefault();
-            // $('#logo').addClass('animate-start');
-            // var vh = $(window).height();
-            // if($('body').hasClass('initial')){
-            //     setTimeout(function() {
-            //         $("body").animate({
-            //             scrollTop: $('#featured').position().top
-            //         }, 666, function(){
-            //             $('body').removeClass('initial');
-            //             $('body').css('overflow', 'auto');
-            //         });
-            //     }, 666)
-            // }
-        // });
-    // }
     // nav triggle
     $('.menu-tab').on('click', function() {
         if(!locked) {
@@ -1701,12 +1664,22 @@ $(function() {
     /**************
     ** admin cms
     /*************/
-    $(".cms-slider").lightSlider({
-        item: 1,
-        // pager: false,
-        enableDrag: false,
-        pause: 5000,
-        slideMargin: 0,
-        controls: false
+    if($(".cms-slider").get(0)) {
+        $(".cms-slider").lightSlider({
+            item: 1,
+            enableDrag: false,
+            pause: 5000,
+            slideMargin: 0,
+            controls: false,
+            adaptiveHeight: true
+        });
+    }
+
+    $('select#product-dropdown').on('change', function() {
+        var image = $(this).find(':selected').attr('data-image');
+        console.log(image);
+        $('.product-image').attr('src', image);
     });
+
+    if($('#ckeditor').get(0)) CKEDITOR.replace('ckeditor');
 });

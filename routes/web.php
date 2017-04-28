@@ -43,17 +43,22 @@ Route::post('image/delete', 'ImageController@deleteImage');
 Route::get('image/{id}/src', 'ImageController@imageSrc');
 
 Route::group(['prefix' => 'admin'], function () {
-  // customization
-  Route::get('customize', 'CustomizeController@index');
-  Route::get('customize/type/{id}/edit', 'CustomizeController@editType');
-  Route::get('customize/component/{id}/edit', 'CustomizeController@editComponent');
-  Route::get('customize/{id}', 'CustomizeController@show');
-  Route::post('customize', 'CustomizeController@store');
+    // dashboard
+    Route::get('/', 'DashboardController@index');
+    // customization
+    Route::get('customize', 'CustomizeController@index');
+    Route::get('customize/type/{id}/edit', 'CustomizeController@editType');
+    Route::get('customize/component/{id}/edit', 'CustomizeController@editComponent');
+    Route::get('customize/{id}', 'CustomizeController@show');
+    Route::post('customize', 'CustomizeController@store');
 
-  Route::get('cms/slider', 'CmsController@slider');
-  Route::get('cms/product', 'CmsController@product');
-  Route::get('cms/menu', 'CmsController@menu');
-  Route::get('cms/page', 'CmsController@page');
+
+    Route::get('cms/', 'CmsController@index');
+    Route::get('cms/{type}/create', 'CmsController@create');
+    Route::post('cms/{type}', 'CmsController@store');
+    Route::get('cms/{type}/{id}/edit', 'CmsController@edit');
+    Route::post('cms/{type}/{id}', 'CmsController@update');
+    Route::post('cms/{type}/{id}/delete', 'CmsController@delete');
 });
 
 // Route::get('/contact', function(){return view('contact');});

@@ -18,9 +18,9 @@ class ImageController extends Controller
 
     public function uploadImage()
     {
-      $file = request()->file('file');
-      $isProductImage = request('isProductImage', 0);
-      return $this->repository->upload(['file' => $file, 'isProductImage' => $isProductImage]);
+        $file = request()->file('file');
+        $isProductImage = request('isProductImage', 0);
+        return $this->repository->upload(['file' => $file, 'isProductImage' => $isProductImage]);
     }
 
     public function deleteImage()

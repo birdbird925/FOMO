@@ -20,9 +20,9 @@ class CreateCmsPageTable extends Migration
           $table->string('page_content_size')->default('small');
           $table->string('page_slug')->unique();
           // seo optiomize
-          $table->string('seo_title');
-          $table->text('seo_description');
-          $table->text('seo_keyword');
+          $table->string('seo_title')->nullable();
+          $table->text('seo_description')->nullable();
+          $table->text('seo_keyword')->nullable();
         });
     }
 

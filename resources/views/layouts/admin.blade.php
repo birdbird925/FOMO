@@ -36,38 +36,23 @@
 	<link href="/css/app.css" rel="stylesheet">
 </head>
 <body>
-<div class="wrapper">
-  	<div class="sidebar" data-color="azure" data-image="/images/sidebar-5.jpg">
+<div class="wrapper" id="admin-wrapper">
+  	<div class="sidebar" data-color="" data-image="/images/sidebar-5.jpg">
+	{{-- <div class="sidebar" data-color="azure" data-image="/images/sidebar-5.jpg"> --}}
   		<div class="sidebar-wrapper">
       		<div class="logo">
         		<a href="/admin" class="simple-text">
-          			FOMO
+					<img src="/images/demo/logo.svg" alt="">
         		</a>
       		</div>
 
             <ul class="nav">
-                <li>
+                <li class="@yield('dashboard-sidebar')">
                     <a href="/admin">
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-				{{-- <li>
-                    <a data-toggle="collapse" href="#tablesExamples" class="collapsed" aria-expanded="false">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Tables
-                           <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="tablesExamples" aria-expanded="false" style="height: 0px;">
-                        <ul class="nav">
-                            <li><a href="../tables/regular.html">Regular Tables</a></li>
-                            <li><a href="../tables/extended.html">Extended Tables</a></li>
-                            <li><a href="../tables/bootstrap-table.html">Bootstrap Table</a></li>
-							<li><a href="../tables/datatables.net.html">DataTables.net</a></li>
-                        </ul>
-                    </div>
-                </li> --}}
 				<li class="@yield('product-nav')">
 					<a data-toggle="collapse" href="#product-dropdown">
 						<i class="pe-7s-wristwatch"></i>
@@ -108,19 +93,12 @@
 						<p>Customer</p>
 					</a>
 				</li>
-				<li>
-					<a href="/admin/promotion">
-						<i class="pe-7s-gift"></i>
-						<p>Promotion</p>
-					</a>
-				</li>
-				<li>
+				<li class="@yield('cms-sidebar')">
 					<a href="/admin/cms">
 						<i class="pe-7s-box2"></i>
 						<P>CMS</P>
 					</a>
 				</li>
-
             </ul>
     	</div>
     </div>
@@ -135,8 +113,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-					@yield('page-direction')
-                    <a class="navbar-brand" href="#">Page direction</a>
+
+					<ul class="page-direction">
+						@yield('page-direction')
+					<ul>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -160,13 +140,13 @@
         </div>
 
 
-        <footer class="footer">
+        {{-- <footer class="footer">
             <div class="container-fluid">
                 <p class="copyright pull-right">
                     &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.thelittletroop.com">The Little Troop</a>, made with love for a better web
                 </p>
             </div>
-        </footer>
+        </footer> --}}
 
     </div>
 </div>
@@ -223,8 +203,11 @@
 	{{-- datatable --}}
 	<script src="/js/admin/jquery.dataTables.min.js"></script>
 
+	<script src="/js/lightslider.min.js"></script>
+
     @stack('scripts')
-    <script src="/js/admin/main.js"></script>
+    {{-- <script src="/js/admin/main.js"></script> --}}
+	<script src="/js/main.js"></script>
 	<script>
 	@if(Session::has('notify'))
 	$.notify({
