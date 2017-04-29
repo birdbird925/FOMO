@@ -128,6 +128,7 @@ $(function() {
                     $("body").animate({
                         scrollTop: (width > 769 ? vh :$('#featured').position().top)
                     }, 666, function(){
+                        console.log('12');
                         if(width < 769)
                             $('body').removeClass('initial');
                         else
