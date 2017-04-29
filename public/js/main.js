@@ -121,7 +121,6 @@ $(function() {
 
         $(window).one('mousewheel DOMMouseScroll touchmove', function(e) {
             if(initial) {
-                locked = true;
                 initial = false;
                 $('#logo').addClass('animate-start');
                 setTimeout(function() {
