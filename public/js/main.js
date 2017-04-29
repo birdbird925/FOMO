@@ -146,11 +146,9 @@ $(function() {
     // nav triggle
     $('.menu-tab').on('click', function() {
         if(!locked) {
-            if(!$('body').hasClass('initial')){
-                locked = true;
-                $('body').toggleClass('reveal-nav');
-                setTimeout(unlock, 777);
-            }
+            locked = true;
+            $('body').toggleClass('reveal-nav');
+            setTimeout(unlock, 777);
         }
     });
     // light slider in home page
