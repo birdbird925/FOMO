@@ -2,7 +2,7 @@ $(function() {
     var token = $('meta[name="csrf-token"]').attr('content');
     var locked = false;
     var currentPosition = 0;
-    function unlock() {locked = false;}
+    function unlock() {locked = false; console.log(locked);}
     // load canvs thumb
     function loadThumb(thumbWrapper){
         var thumb = thumbWrapper;
@@ -81,28 +81,65 @@ $(function() {
     ** home
     ***************/
     // initial the animation for home page
-    if($('body').hasClass('initial') && !$('#logo').hasClass('fixed') && !$('#logo').hasClass('animate-start')) {
+    if(!$('#logo').hasClass('fixed') && !$('#logo').hasClass('animate-start')) {
         // reset page to top
         $(window).on('beforeunload', function() {$(window).scrollTop(0);});
 
-        $(window).on('click', function(e){
-            if($('body').hasClass('initial')) {
-                e.preventDefault();
-            }
-        });
+        var initial = true;
+        var position = 2;
+        var vh = $(window).height();
+        var width = $(window).width();
 
-        $(window).one('mousewheel', function() {
-            $(window).scrollTop(0);
-            $('#logo').addClass('animate-start');
-            var vh = $(window).height();
-            if($('body').hasClass('initial')){
+        // function scroll
+        function scroll(e) {
+            currentVh = $(window).scrollTop();
+            var scrollTo = 0;
+            var wheelData = (e.type == 'mousewheel' ? e.originalEvent.wheelDelta : e.originalEvent.detail);
+            // scroll down
+            if(wheelData < 0) {
+                scrollTo = currentVh + vh;
+            }
+            // scroll up
+            else {
+                last = currentVh % vh;
+                scrollTo = (last != 0 ? currentVh - last : currentVh - vh);
+            }
+
+
+            $("body").animate({
+                scrollTop: scrollTo
+            }, 666, function(){
+                setTimeout(function() {
+                    $(window).one('mousewheel DOMMouseScroll', function(e) {
+                        scroll(e);
+                    });
+                }, 333);
+            });
+
+            return false;
+        }
+
+        $(window).one('mousewheel DOMMouseScroll touchmove', function(e) {
+            if(initial) {
+                locked = true;
+                initial = false;
+                $('#logo').addClass('animate-start');
                 setTimeout(function() {
                     $("body").animate({
-                        scrollTop: $('#featured').position().top
+                        scrollTop: (width > 769 ? vh :$('#featured').position().top)
                     }, 666, function(){
-                        $('body').removeClass('initial');
+                        if(width < 769)
+                            $('body').removeClass('initial');
+                        else
+                            setTimeout(function() {
+                                $(window).one('mousewheel DOMMouseScroll', function(e) {
+                                    scroll(e);
+                                });
+                            }, 666);
                     });
-                }, 666)
+                }, 666);
+
+                return false;
             }
         });
     }
