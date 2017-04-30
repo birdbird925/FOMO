@@ -206,6 +206,8 @@
 
 	<script src="/js/lightslider.min.js"></script>
 
+	<script src="/js/konva.js"></script>
+
     @stack('scripts')
     {{-- <script src="/js/admin/main.js"></script> --}}
 	<script src="/js/main.js"></script>

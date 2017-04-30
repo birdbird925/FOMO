@@ -1303,50 +1303,53 @@ $(function() {
     function getStageInfo() {
         var imageList = [];
         var thumb = {};
-        thumb['stage'] = {};
-        thumb['layer'] = {};
         $.each(loadCustomizeCanvas.canvas, function(direction, stage) {
             $.each(stage.find('Image'), function(index, konvaImg) {
-                var imgSrc = $(konvaImg.image()).attr('src')
-                imageList.push(imgSrc);
+                if(!konvaImg.hasName('personalize-area')) {
+                    var imgSrc = $(konvaImg.image()).attr('src')
+                    console.log(imgSrc);
+                    imageList.push(imgSrc);
+                }
             });
 
-            if(direction == 'front') {
-                thumb['stage']['width'] = stage.width();
-                thumb['stage']['height'] = stage.height();
-                $.each(stage.find('Layer'), function(layer, konvaLayer) {
-                    if(konvaLayer.find('Image, Text').length > 0) {
-                        thumb['layer'][layer] = {};
-                        $.each(konvaLayer.find('Image, Text'), function(index, konvaNode){
-                            if(konvaNode.getClassName() == 'Image') {
-                                var detail = {
-                                    'type': 'image',
-                                    'src': $(konvaNode.image()).attr('src'),
-                                    'x': konvaNode.x(),
-                                    'y': konvaNode.y(),
-                                    'width': konvaNode.width(),
-                                    'height': konvaNode.height(),
-                                    'rotation': konvaNode.rotation(),
-                                }
-                                thumb['layer'][layer][konvaNode.getZIndex()] = detail;
+            thumb[direction] = {};
+            thumb[direction]['stage'] = {};
+            thumb[direction]['layer'] = {};
+            thumb[direction]['stage']['width'] = stage.width();
+            thumb[direction]['stage']['height'] = stage.height();
+
+            $.each(stage.find('Layer'), function(layer, konvaLayer) {
+                if(konvaLayer.find('Image, Text').length > 0) {
+                    thumb[direction]['layer'][layer] = {};
+                    $.each(konvaLayer.find('Image, Text'), function(index, konvaNode){
+                        if(konvaNode.getClassName() == 'Image') {
+                            var detail = {
+                                'type': 'image',
+                                'src': $(konvaNode.image()).attr('src'),
+                                'x': konvaNode.x(),
+                                'y': konvaNode.y(),
+                                'width': konvaNode.width(),
+                                'height': konvaNode.height(),
+                                'rotation': konvaNode.rotation(),
                             }
-                            if(konvaNode.getClassName() == 'Text') {
-                                var detail = {
-                                    'type': 'text',
-                                    'text': konvaNode.text(),
-                                    'font-size': konvaNode.fontSize(),
-                                    'x': konvaNode.x(),
-                                    'y': konvaNode.y(),
-                                }
-                                thumb['layer'][layer][konvaNode.getZIndex()] = detail;
+                            thumb[direction]['layer'][layer][konvaNode.getZIndex()] = detail;
+                        }
+                        if(konvaNode.getClassName() == 'Text') {
+                            var detail = {
+                                'type': 'text',
+                                'text': konvaNode.text(),
+                                'font-size': konvaNode.fontSize(),
+                                'x': konvaNode.x(),
+                                'y': konvaNode.y(),
                             }
-                        });
-                    }
-                });
-            }
+                            thumb[direction]['layer'][layer][konvaNode.getZIndex()] = detail;
+                        }
+                    });
+                }
+            });
         });
 
-        return {'thumb': JSON.stringify(thumb), 'images': JSON.stringify(imageList)};
+        return {'thumb': JSON.stringify(thumb['front']), 'back': JSON.stringify(thumb['back']), 'images': JSON.stringify(imageList)};
     }
     function saveProduct(popup = true) {
         var stageDetail = getStageInfo();
@@ -1357,7 +1360,8 @@ $(function() {
                 'product': $('input[name="customize-product"]').val(),
                 'name': $('input[name="customize-name"]').val(),
                 'images': stageDetail.images,
-                'thumb': stageDetail.thumb
+                'thumb': stageDetail.thumb,
+                'back' : stageDetail.back
             },
             type: 'POST',
             error: function(a, b, c){
@@ -1574,7 +1578,8 @@ $(function() {
                 'product': $('input[name="customize-product"]').val(),
                 'name': $('input[name="customize-name"]').val(),
                 'images': stageDetail.images,
-                'thumb': stageDetail.thumb
+                'thumb': stageDetail.thumb,
+                'back' : stageDetail.back
             },
             type: 'POST',
             error: function(a, b, c){
@@ -1605,7 +1610,8 @@ $(function() {
                     'product': $('input[name="customize-product"]').val(),
                     'name': $('input[name="customize-name"]').val(),
                     'images': stageDetail.images,
-                    'thumb': stageDetail.thumb
+                    'thumb': stageDetail.thumb,
+                    'back' : stageDetail.back
                 },
                 type: 'POST',
                 error: function(a, b, c){
@@ -1624,7 +1630,8 @@ $(function() {
                     'product': $('input[name="customize-product"]').val(),
                     'name': $('input[name="customize-name"]').val(),
                     'images': stageDetail.images,
-                    'thumb': stageDetail.thumb
+                    'thumb': stageDetail.thumb,
+                    'back' : stageDetail.back
                 },
                 type: 'POST',
                 error: function(a, b, c){
@@ -1708,10 +1715,24 @@ $(function() {
             adaptiveHeight: true
         });
     }
+    if($(".components-slider").get(0)) {
+        var componentSlider = $(".components-slider").lightSlider({
+            item: 1,
+            enableDrag: false,
+            pause: 5000,
+            slideMargin: 0,
+            controls: false,
+            pager: false,
+            loop: true,
+            adaptiveHeight: true
+        });
+
+        $('.component-control').on('click', '.next', function() {componentSlider.goToNextSlide();});
+        $('.component-control').on('click', '.prev', function() {componentSlider.goToPrevSlide();});
+    }
 
     $('select#product-dropdown').on('change', function() {
         var image = $(this).find(':selected').attr('data-image');
-        console.log(image);
         $('.product-image').attr('src', image);
     });
 
@@ -1736,4 +1757,27 @@ $(function() {
             ],
         });
     }
+
+    $('.edit-shipment-tab').on('click', function() {
+        $($(this).attr('data-target')).toggleClass('hide');
+    });
+
+    $('.required-confirm').on('click', function(e) {
+        e.preventDefault();
+        var form = $(this).closest('form');
+
+        swal({
+            title: "Are you sure?",
+            text: "Take this action may affect user shopping experience",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel pls!",
+            closeOnConfirm: false
+        },
+        function(isConfirm){
+            if (isConfirm) {form.submit();}
+        });
+    });
 });

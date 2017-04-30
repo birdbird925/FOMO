@@ -48,8 +48,8 @@
                 </div>
                 <div class="content">
                     @foreach($customer->order as $order)
-                        <div class="order-row">
-                            <div class="order-header">
+                        <div class="order-row summary-row">
+                            <div class="summary-header">
                                 <a href="/admin/order/{{$order->id}}" class="header-title">
                                     <i class="fa fa-{{$order->order_status == 1 ? 'check-circle' : 'times-circle'}}"></i>
                                     {{$order->orderCode()}}
@@ -59,7 +59,7 @@
                                     {{$order->created_at->toDateTimeString()}}
                                 </div>
                             </div>
-                            <div class="order-item-summary">
+                            <div class="order-item-summary item-summary">
                                 @foreach($order->items as $item)
                                     <div class="order-item">
                                         <div class="product-image">
@@ -67,7 +67,7 @@
                                         </div>
                                         <div class="product-info">
                                             <div class="name">
-                                                {{$item->product->name}}
+                                                <a href="/admin/customize/product/{{$item->product->id}}">{{$item->product->name}}</a>
                                             </div>
                                             <div class="description">
                                                 {{$item->product->description}}

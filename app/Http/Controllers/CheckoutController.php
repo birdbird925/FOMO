@@ -121,67 +121,99 @@ class CheckoutController extends Controller
     	$paymentExecution->setPayerId($payer_id);
     	$executePayment = $payment->execute($paymentExecution, $this->_apiContext);
 
-        $order = Order::create([
-            'user_id' => Auth::check() ? Auth::user()->id : null,
-            'name' => $address->getRecipientName(),
-            'email' => $payerInfo->getEmail(),
-            'phone' => $address->getPhone() ? $address()->getPhone() : $payerInfo->getPhone(),
-            'address_line_1' => $address->getLine1(),
-            'address_line_2' => $address->getLine2(),
-            'city' => $address->getCity(),
-            'postcode' => $address->getPostalCode(),
-            'state' => $address->getState(),
-            'country' => $address->getCountryCode(),
-            'shipping_cost' => $amount->getDetails()->getShipping(),
-            'paypal_id' => $payment->getId(),
-            'payment_status' => 1
-        ]);
+        $transactionID = $executePayment->getTransactions()[0]->getRelatedResources()[0]->getSale()->getId();
+        if($executePayment->getState() == 'approved') {
+            $order = Order::create([
+                'user_id' => Auth::check() ? Auth::user()->id : null,
+                'name' => $address->getRecipientName(),
+                'email' => $payerInfo->getEmail(),
+                'phone' => $address->getPhone() ? $address()->getPhone() : $payerInfo->getPhone(),
+                'address_line_1' => $address->getLine1(),
+                'address_line_2' => $address->getLine2(),
+                'city' => $address->getCity(),
+                'postcode' => $address->getPostalCode(),
+                'state' => $address->getState(),
+                'country' => $address->getCountryCode(),
+                'shipping_cost' => $amount->getDetails()->getShipping(),
+                // 'paypal_id' => $payment->getId(),
+                'paypal_id' => $transactionID,
+                'payment_status' => 1
+            ]);
 
-        $cartItemCode = [];
-        foreach($items as $item)
-            $cartItemCode[] = $item->sku;
+            $cartItemCode = [];
+            foreach($items as $item)
+                $cartItemCode[] = $item->sku;
 
-        foreach(session('cart.item') as $cartItem) {
-            if(in_array($cartItem['code'], $cartItemCode)) {
-                $component = json_decode($cartItem['product']);
-                $type_id = $component->customize_type->value;
-                $product = CustomizeProduct::create([
-                    'name' => $cartItem['name'],
-                    'components' => $cartItem['product'],
-                    'image' => $cartItem['image'],
-                    'images' =>$cartItem['images'],
-                    'thumb' => $cartItem['thumb'],
-                    'type_id' => $type_id,
-                    'description' => $cartItem['description'],
-                    'price' => $cartItem['price'],
-                    'created_by' => Auth::check() ? Auth::user()->id : null,
-                ]);
+            foreach(session('cart.item') as $cartItem) {
+                if(in_array($cartItem['code'], $cartItemCode)) {
+                    $component = json_decode($cartItem['product']);
+                    $type_id = $component->customize_type->value;
+                    $product = CustomizeProduct::create([
+                        'name' => $cartItem['name'],
+                        'components' => $cartItem['product'],
+                        'image' => $cartItem['image'],
+                        'images' =>$cartItem['images'],
+                        'thumb' => $cartItem['thumb'],
+                        'back' => $cartItem['back'],
+                        'type_id' => $type_id,
+                        'description' => $cartItem['description'],
+                        'price' => $cartItem['price'],
+                        'created_by' => Auth::check() ? Auth::user()->id : null,
+                    ]);
 
-                $key = array_search($cartItem['code'],$cartItemCode);
-                $orderItem = $order->items()->create([
-                    'product_id' => $product->id,
-                    'price' => $items[$key]->price,
-                    'quantity' => $items[$key]->quantity
-                ]);
-                $order->save();
+                    $key = array_search($cartItem['code'],$cartItemCode);
+                    $orderItem = $order->items()->create([
+                        'product_id' => $product->id,
+                        'price' => $items[$key]->price,
+                        'quantity' => $items[$key]->quantity
+                    ]);
+                    $order->save();
+                }
+
             }
 
+            // remove session cart
+            session()->forget("cart");
+            // send mail
+            // $order->notify(new OrderSuccess($order));
+
+            session()->flash('popup', [
+                'title' => 'Hooray!',
+                'caption' => 'You order is successfully placed.'
+            ]);
+
+            if(Auth::check())
+                return redirect('/account');
+            else
+                return redirect('/cart');
         }
-
-        // remove session cart
-        session()->forget("cart");
-        // send mail
-        // $order->notify(new OrderSuccess($order));
-
-        session()->flash('popup', [
-            'title' => 'Hooray!',
-            'caption' => 'You order is successfully placed.'
-        ]);
-
-        if(Auth::check())
-            return redirect('/account');
-        else
+        else {
             return redirect('/cart');
+        }
+    }
+
+    public function refund(){
+        $order = Order::find(10);
+        // dd($order);
+        $amt = PayPal::Amount();
+        $amt->setCurrency('USD')
+            ->setTotal($order->amount());
+
+        $refundRequest = PayPal::Refund();
+        // $refundRequest->setAmount($amt);
+
+        $sale = PayPal::Sale();
+        $sale->setId($order->paypal_id);
+
+        // $refundedSale = $sale->refundSale($refundRequest, $apiContext);
+
+        dd($sale);
+
+        // $refund->setSaleId($order->paypal_id);
+        // $refund->executeCall('https://api-3t.sandbox.paypal.com/nvp', 'POST', '')
+
+
+        // https://api-3t.sandbox.paypal.com/nvp
     }
 
     public function createWebProfile(){

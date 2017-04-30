@@ -20,6 +20,7 @@ class CreateCustomizeProductsTable extends Migration
             $table->text('image')->nullable();
             $table->text('images');
             $table->text('thumb');
+            $table->text('back');
             $table->text('description');
             $table->integer('type_id')->unsigned();
             $table->decimal('price', 5, 2);

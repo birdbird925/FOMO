@@ -19,12 +19,22 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function shipments()
+    {
+        return $this->hasMany(OrderShipment::class);
+    }
+
     public function subTotal()
     {
         $total = 0;
         foreach($this->items as $item)
             $total += $item->price;
         return $total;
+    }
+
+    public function amount()
+    {
+        return $this->shipping_cost + $this->subTotal();
     }
 
     public function fulfillStatus()

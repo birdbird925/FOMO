@@ -10938,6 +10938,31 @@ footer .design-by a:hover {
   color: red;
 }
 
+#admin-wrapper .summary-row .summary-header {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+#admin-wrapper .summary-row .summary-header .header-title {
+  font-weight: 900;
+  font-family: 'Muli';
+  letter-spacing: 2px;
+  font-size: 18px;
+}
+
+#admin-wrapper .summary-row .summary-header a:hover {
+  text-decoration: none;
+}
+
+#admin-wrapper .summary-row .summary-header .date {
+  color: #D3D3D3;
+  font-weight: 900;
+}
+
+#admin-wrapper .summary-row .item-summary {
+  margin-bottom: 30px;
+}
+
 .cms-slider {
   text-align: center;
 }
@@ -11028,47 +11053,22 @@ footer .design-by a:hover {
   background: #FFE477;
 }
 
-.order-row .order-header {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-}
-
-.order-row .order-header .header-title {
-  font-weight: 900;
-  font-family: 'Muli';
-  letter-spacing: 2px;
-  font-size: 18px;
-}
-
-.order-row .order-header a:hover {
-  text-decoration: none;
-}
-
-.order-row .order-header .date {
-  color: #D3D3D3;
-  font-weight: 900;
-}
-
-.order-row .order-item-summary {
-  margin-bottom: 30px;
-}
-
-.order-row .order-item-summary .order-item {
+.order-row .order-item {
   display: -webkit-box;
   display: flex;
   margin-bottom: 10px;
 }
 
-.order-row .order-item-summary .order-item .product-image img {
+.order-row .order-item .product-image img {
   width: 150px;
   margin-right: 30px;
 }
 
-.order-row .order-item-summary .order-item .product-info {
+.order-row .order-item .product-info {
   text-align: left;
 }
 
-.order-row .order-item-summary .order-item .product-info .name {
+.order-row .order-item .product-info .name a {
   text-transform: uppercase;
   font-size: 18px;
   font-weight: 900;
@@ -11076,17 +11076,35 @@ footer .design-by a:hover {
   letter-spacing: 2px;
 }
 
-.order-row .order-item-summary .order-item .product-info .description {
+.order-row .order-item .product-info .description {
   width: 75%;
 }
 
-.order-row .order-item-summary .order-item .item-info {
+.order-row .order-item .item-info {
   min-width: 100px;
   text-align: right;
 }
 
-.order-row .order-item-summary .order-item .item-info .quantity {
+.order-row .order-item .item-info .quantity {
   margin-bottom: 10px;
+}
+
+.customize-product-wrapper .name {
+  font-family: 'Muli';
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.customize-product-wrapper .price {
+  font-size: 18px;
+  color: #D3D3D3;
+}
+
+.customize-product-wrapper .components-slider img {
+  border: 1px solid #F2F2F2;
 }
 
 /*# sourceMappingURL=app.css.map */

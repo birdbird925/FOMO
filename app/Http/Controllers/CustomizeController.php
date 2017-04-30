@@ -81,6 +81,7 @@ class CustomizeController extends Controller
             'product' => request('product'),
             'images' => request('images'),
             'thumb' => request('thumb'),
+            'back' => request('back'),
             'price' => $this->productType(request('product'))->price,
             'description' => $this->productDescription(request('product'))
         ]);
@@ -89,6 +90,7 @@ class CustomizeController extends Controller
         foreach(session('cart.item') as $item)
             $total += $item['price'];
         session(['cart.total' => $total]);
+
         return $code;
     }
 
@@ -104,6 +106,7 @@ class CustomizeController extends Controller
                     'product' => request('product'),
                     'images' => request('images'),
                     'thumb' => request('thumb'),
+                    'back' => request('back'),
                     'price' => $this->productType(request('product'))->price,
                     'description' => $this->productDescription(request('product'))
                 ]]);
@@ -125,6 +128,7 @@ class CustomizeController extends Controller
                 'components' => request('product'),
                 'images' => request('images'),
                 'thumb' => request('thumb'),
+                'back' => request('back'),
                 'type_id' => $this->productType(request('product'))->id,
                 'description' => $this->productDescription(request('product')),
                 'price' => $this->productType(request('product'))->price,
@@ -150,6 +154,7 @@ class CustomizeController extends Controller
                     'components' => request('product'),
                     'images' => request('images'),
                     'thumb' => request('thumb'),
+                    'back' => request('back'),
                     'type_id' => $this->productType(request('product'))->id,
                     'description' => $this->productDescription(request('product')),
                 ]);
@@ -228,5 +233,14 @@ class CustomizeController extends Controller
         if(!$engrave) $description .= 'Without Engrave / ';
 
         return $description;
+    }
+
+    // admin
+    public function viewProduct($id)
+    {
+        $product = CustomizeProduct::find($id);
+        if(!$product) abort('404');
+
+        return view('admin.customize.product.show', compact('product'));
     }
 }

@@ -25,6 +25,7 @@ Route::post('/cart/{id}/remove', 'CartController@removeItem');
 Route::post('/checkout/validation', 'CheckoutController@validation');
 Route::post('/checkout', 'CheckoutController@checkout');
 Route::get('/checkout/done', 'CheckoutController@getDone');
+Route::get('/checkout/refund', 'CheckoutController@refund');
 //customize
 Route::get('/customize', 'CustomizeController@index');
 Route::get('/customize/{id}', 'CustomizeController@edit');
@@ -46,14 +47,19 @@ Route::group(['prefix' => 'admin'], function () {
     // dashboard
     Route::get('/', 'DashboardController@index');
     // customization
-    Route::get('customize', 'CustomizeController@index');
-    Route::get('customize/type/{id}/edit', 'CustomizeController@editType');
-    Route::get('customize/component/{id}/edit', 'CustomizeController@editComponent');
-    Route::get('customize/{id}', 'CustomizeController@show');
-    Route::post('customize', 'CustomizeController@store');
+    Route::get('customize/product/{id}', 'CustomizeController@viewProduct');
+    // Route::get('customize', 'CustomizeController@index');
+    // Route::get('customize/type/{id}/edit', 'CustomizeController@editType');
+    // Route::get('customize/component/{id}/edit', 'CustomizeController@editComponent');
+    // Route::get('customize/{id}', 'CustomizeController@show');
+    // Route::post('customize', 'CustomizeController@store');
     // order
     Route::get('order', 'OrderController@index');
     Route::get('order/{id}', 'OrderController@show');
+    Route::post('order/{id}/cancel', 'OrderController@cancel');
+    Route::post('order/{id}/fulfill', 'OrderController@fulfill');
+    Route::post('shipment/{id}', 'OrderController@updateShipment');
+    Route::post('shipment/{id}/delete', 'OrderController@cancelShipment');
     // customer
     Route::get('customer', 'CustomerController@index');
     Route::get('customer/{id}', 'CustomerController@show');

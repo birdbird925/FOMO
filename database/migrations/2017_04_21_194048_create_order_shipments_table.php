@@ -15,8 +15,9 @@ class CreateOrderShipmentsTable extends Migration
     {
         Schema::create('order_shipments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tracking_number');
             $table->string('shipping_carrier');
+            $table->string('tracking_number');
+            $table->string('tracking_url');
             $table->integer('order_id')->unsigned();
             $table->timestamps();
 
